@@ -58,22 +58,6 @@ app.post(`/getbycode` , async (req, res) => {
 
    }))
 
-  // snapshot.forEach(doc => {
-  //   doc.data().list_codes.map(codeU => {
-  //     var d = new Date().getTime();
-        
-  //       if (codeU.isValid && codeU.maxDate > d) {
-          
-  //         dates = new Date(codeU.maxDate).toLocaleDateString('fr-FR')
-       
-  //       }
-        
-  //    })
-
-  //       res.send(doc.data().code_promo)
-
-  // });
-
 });
 
 
@@ -99,7 +83,7 @@ const generateCodeUinque = () => {
 
 
 const port = 3131;  
-app.listen(port, (err) => {
+app.listen(process.env.PORT , (err) => {
       if (err) {
         console.log(`Errors: ${err}`);
         process.exit(-1);
