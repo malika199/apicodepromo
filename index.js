@@ -87,7 +87,7 @@ app.listen(process.env.PORT || 5000, (err) => {
         console.log(`Errors: ${err}`);
         process.exit(-1);
       }
-      console.log(`app is runnning on port ${port}`);
+      console.log(`app is runnning on port ${process.env.PORT}`);
     });
   
   //   function generate_random_string(string_length){
