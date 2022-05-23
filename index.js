@@ -107,15 +107,15 @@ app.listen(port, (err) => {
       console.log(`app is runnning on port ${port}`);
     });
   
-    function generate_random_string(string_length){
-      let random_string = '';
-      let random_ascii;
-      for(let i = 0; i < string_length; i++) {
-          random_ascii = Math.floor((Math.random() * 25) + 97);
-          random_string += String.fromCharCode(random_ascii)
-      }
-      return random_string
-  }
+  //   function generate_random_string(string_length){
+  //     let random_string = '';
+  //     let random_ascii;
+  //     for(let i = 0; i < string_length; i++) {
+  //         random_ascii = Math.floor((Math.random() * 25) + 97);
+  //         random_string += String.fromCharCode(random_ascii)
+  //     }
+  //     return random_string
+  // }
   
   // console.log(generate_random_string(1))
   
