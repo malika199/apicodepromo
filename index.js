@@ -5,6 +5,13 @@ const bodyParser = require('body-parser');
 const app = express();
 app.use(express.json())
 app.use(cors());
+
+
+app.get('/', (req,res) => {
+  res.send('Welcome to Daily Code Buffer in Heroku Auto Deployment!!');
+})
+
+
 // app.use(bodyParser);
 app.post("/create", async (req, res) => {
   const data = req.body;
@@ -16,6 +23,7 @@ app.post("/create", async (req, res) => {
   await Code.add({ ...data,list_codes});
   res.send({ msg: "codes Added" });
 });
+
 
 
  app.get("/getcodes", async (req, res) => {
