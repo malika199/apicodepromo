@@ -82,8 +82,7 @@ const generateCodeUinque = () => {
 
 
 
-const port = 3131;  
-app.listen(process.env.PORT , (err) => {
+app.listen(process.env.PORT || 5000, (err) => {
       if (err) {
         console.log(`Errors: ${err}`);
         process.exit(-1);
