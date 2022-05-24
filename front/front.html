@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    </head>
+    <body>
+    <form  method="POST" >
+        <label for="codepromo" > saisissez votre code promo </label>
+        <input type="text" name="codeP" id="codepromo"  >
+        <input type="submit" value="submit" onclick="getCodePromo()">
+    </form>
+
+        <script>
+            // var submitt = ()=> {           
+            //  var codeP = $('#codepromo').val();
+
+            //     document.write('salam',codeP);
+
+            // }
+           const getCodePromo = () => {
+            var codeP = $('#codepromo').val();
+
+            document.write('salam',codeP);
+                return fetch("http://localhost:3131/getbycode", {
+                    method: "POST",
+                    headers: {
+                    "content-type": "application/json",
+                    },
+                    body: JSON.stringify(codeP),
+                }).then((res) => res.json())
+            }
+
+              
+                    
+        </script>
+
+
+</body>
+</html>
+
