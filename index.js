@@ -52,7 +52,7 @@ app.post(`/getbycode` , async (req, res) => {
   });
 
   res.send(codePromo)
-  return codePromo;
+  return {body:codePromo,status:200};
 });
 
 
