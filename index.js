@@ -33,35 +33,25 @@ app.post("/create", async (req, res) => {
     res.send(list);
 });
 app.post(`/getbycode` , async (req, res) => {
-  let codeUrl = req.body.codeUrl;
-   console.log(codeUrl)
+   let codeUrl = req.body.codeUrl;
+  //  console.log(codeUrl)
   const snapshot = await Code
   .get();
 
  if (snapshot.empty) {
     console.log('No matching documents.');
   }  
+  let codePromo = ""
+  snapshot.docs.forEach(el => {
+    el.data().list_codes.forEach(elem => {
+      if(codeUrl == elem.code_unique){
+      
+        codePromo = el.data().code_promo
+      }
+    })
+  });
 
-   const list_code = snapshot.docs.map((doc)=> ({
-    list_codes : doc.data().list_codes.forEach(code => {
-      code_unique =  code.code_unique 
-        console.log('heeeeeeeeeeeeey',code_unique)   
-        if(code_unique == codeUrl){
-             
-        res.send(doc.data().code_promo)
-// return {
-//   body:doc.data().code_promo,
-//   status:200
-// }
-        }else{
-           console.log(' votre code n\'existe pas');
-        }
-        
-
-    }),
-
-   }))
-
+  res.send(codePromo)
 });
 
 
