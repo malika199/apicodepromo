@@ -57,7 +57,13 @@ app.post(`/getbycode`, async (req, res) => {
         //   return {body:codePromo,status:200};
     })
   );
-  return res.send({ codePromo });
+  if (res.status(200)) {
+       return res.send({ codePromo });
+
+  }
+  else{
+    console.log(" votre code ne correspent à aucun code promo")
+  }
 
 
   //  if (snapshot.empty) {
