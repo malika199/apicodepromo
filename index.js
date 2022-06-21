@@ -52,6 +52,7 @@ app.post(`/getbycode` , async (req, res) => {
   });
 
   res.send(codePromo)
+  return codePromo;
 });
 
 
