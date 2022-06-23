@@ -40,9 +40,8 @@ app.post(`/getbycode`, async (req, res) => {
   let codeUrl = req.body.codeUrl;
   let codePromo = "";
 
-  //  console.log(codeUrl)
+  //  console.log(codewf11780-01236eUrl)
   const snapshot = await Code.get()
-  .then((er) => {return er})
   .then((e) =>
     e.docs.forEach((el) => {
       // console.log(el.data()  )
