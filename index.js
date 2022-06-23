@@ -58,7 +58,7 @@ app.post(`/getbycode`, async (req, res) => {
     })
   );
   if (res.status(200)) {
-       return res.send({ codePromo });
+       return res.json({ codePromo });
 
   }
   else{
