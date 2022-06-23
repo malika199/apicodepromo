@@ -42,6 +42,7 @@ app.post(`/getbycode`, async (req, res) => {
 
   //  console.log(codeUrl)
   const snapshot = await Code.get()
+  .then((er) => {return er})
   .then((e) =>
     e.docs.forEach((el) => {
       // console.log(el.data()  )
