@@ -39,36 +39,58 @@ app.get("/getcodes", async (req, res) => {
 app.post(`/getbycode`, async (req, res) => {
   let codeUrl = req.body.codeUrl;
   let codePromo = "";
-
-  //  console.log(codewf11780-01236eUrl)
-  const snapshot = await Code.get()
-  .then((e) =>
+  const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
-      // console.log(el.data()  )
-
-        el.data().list_codes.forEach((elem) => {
-          if (codeUrl == elem.code_unique) {
-            codePromo = el.data().code_promo;
-          
-          }
-        });
-        console.log('codePromo',codePromo)
-        // return res.send({ codePromo });
-        //   return {body:codePromo,status:200};
+      el.data().list_codes.forEach((elem) => {
+        if (codeUrl == elem.code_unique) {
+          codePromo = el.data().code_promo;
+        }
+      });
+      console.log("codePromo", codePromo);
     })
   );
   if (res.status(200)) {
-       return res.json({ codePromo });
-
+    return res.json({ codePromo });
+  } else {
+    console.log(" votre code ne correspent à aucun code promo");
   }
-  else{
-    console.log(" votre code ne correspent à aucun code promo")
-  }
+});
 
+app.post("/disable", async (req, res) => {
+  // Code.get().then((querySnapshot) => {
+  //   querySnapshot.forEach((doc) => {
+  //       console.log(`${doc.id} => ${doc.data()}`);
+  //   });
+  // });
 
-  //  if (snapshot.empty) {
-  //     console.log('No matching documents.');
-  //   }
+  const codeUnique = req.body.codeUnique;
+  let obj = [];
+  const snapshot = await Code.get().then((e) =>
+    e.docs.forEach((el) => {
+      el.data().list_codes.forEach((elem) => {
+        if (codeUnique == elem.code_unique) {
+          // elem.remove()
+          elem.isValid = false
+          obj = [...obj, elem ]      
+
+          // obj[`list_codes[${index}].isValid`]=false
+          // console.log(elem)
+          // console.log(el.id)
+          // console.log(Code.doc(el.id))
+          // Code.doc(el.id).update(obj)
+        }else{
+           obj = [...obj, elem ]      
+        }
+      });
+      // Code.doc(el.id).delete()
+
+      Code.doc(el.id).update({list_codes:obj})
+
+    })
+
+  );
+  console.log(obj)
+
 });
 
 function generateRandomLetter() {
@@ -93,15 +115,3 @@ app.listen(process.env.PORT || 5000, (err) => {
   }
   console.log(`app is runnning on port ${process.env.PORT}`);
 });
-
-//   function generate_random_string(string_length){
-//     let random_string = '';
-//     let random_ascii;
-//     for(let i = 0; i < string_length; i++) {
-//         random_ascii = Math.floor((Math.random() * 25) + 97);
-//         random_string += String.fromCharCode(random_ascii)
-//     }
-//     return random_string
-// }
-
-// console.log(generate_random_string(1))
