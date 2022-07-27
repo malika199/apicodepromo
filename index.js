@@ -31,8 +31,6 @@ app.post("/create", async (req, res) => {
   res.send({ msg: "codes Added" });
 });
 
-
-
 app.get("/getcodes", async (req, res) => {
   const snapshot = await Code.get();
   const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
