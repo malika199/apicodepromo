@@ -21,7 +21,7 @@ app.post("/create", async (req, res) => {
       ...list_codes,
       {
         code_unique: generateCodeUinque(),
-        maxDate: new Date().getTime(),
+        maxDate: new Date().toLocaleDateString("fr-FR"),
         isValid: true,
       },
     ];
@@ -57,40 +57,29 @@ app.post(`/getbycode`, async (req, res) => {
 });
 
 app.post("/disable", async (req, res) => {
-  // Code.get().then((querySnapshot) => {
-  //   querySnapshot.forEach((doc) => {
-  //       console.log(`${doc.id} => ${doc.data()}`);
-  //   });
-  // });
-
   const codeUnique = req.body.codeUnique;
   let obj = [];
-  const snapshot = await Code.get().then((e) =>
-    e.docs.forEach((el) => {
-      el.data().list_codes.forEach((elem) => {
+  const snapshot = await Code.get().then((e) => {
+    console.log("e", e.docs);
+
+    return e.docs.forEach((el) => {
+     
+      el.data().list_codes.filter((elem) => {
+        console.log("elem", elem);
         if (codeUnique == elem.code_unique) {
-          // elem.remove()
-          elem.isValid = false
-          obj = [...obj, elem ]      
-
-          // obj[`list_codes[${index}].isValid`]=false
-          // console.log(elem)
-          // console.log(el.id)
-          // console.log(Code.doc(el.id))
-          // Code.doc(el.id).update(obj)
-        }else{
-           obj = [...obj, elem ]      
+          elem.isValid = false;  
         }
+        obj = [...obj, elem];
+        return obj;
       });
-      // Code.doc(el.id).delete()
+      return Code.doc(el.id).update({ list_codes: obj });  
 
-      Code.doc(el.id).update({list_codes:obj})
+    });
+  });
 
-    })
+  console.log(obj);
 
-  );
-  console.log(obj)
-
+  res.send({ msg: "code modifié" });
 });
 
 function generateRandomLetter() {
