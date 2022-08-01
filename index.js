@@ -42,7 +42,7 @@ app.post(`/getbycode`, async (req, res) => {
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
       el.data().list_codes.forEach((elem) => {
-        if (codeUrl == elem.code_unique && elem.isValid == true && el.date_expiration < new Date().getTime()) {
+        if (codeUrl == elem.code_unique && elem.isValid == true && el.date_expiration < new Date().toLocaleDateString("fr-FR")) {
           codePromo = el.data().code_promo;
         } else{
           console.log('c est un mauvais code')
