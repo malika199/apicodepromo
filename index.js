@@ -41,11 +41,18 @@ app.post(`/getbycode`, async (req, res) => {
   let codePromo = "";
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
-      el.data().list_codes.forEach((elem) => {
-        if (codeUrl == elem.code_unique && elem.isValid == true && el.date_expiration >= new Date().toLocaleDateString("fr-FR")) {
+      el.data().list_codes.forEach((elem) => { 
+        var date_exp = el.data().date_expiration;
+        var date_today = new Date().toLocaleDateString("fr-FR")
+        if ( codeUrl == elem.code_unique && elem.isValid == true && date_exp >= date_today) {
+             
+                console.log(date_today)
+                 console.log(date_exp)
+          console.log("elem.isValid", elem.isValid);
+
           codePromo = el.data().code_promo;
-        } else{
-          console.log('code invalide ')
+        } else {
+          console.log("code invalide ");
         }
       });
       console.log("codePromo", codePromo);
@@ -65,17 +72,15 @@ app.post("/disable", async (req, res) => {
     console.log("e", e.docs);
 
     return e.docs.forEach((el) => {
-     
       el.data().list_codes.filter((elem) => {
         console.log("elem", elem);
         if (codeUnique == elem.code_unique) {
-          elem.isValid = false;  
+          elem.isValid = false;
         }
         obj = [...obj, elem];
         return obj;
       });
-      return Code.doc(el.id).update({ list_codes: obj });  
-
+      return Code.doc(el.id).update({ list_codes: obj });
     });
   });
 
