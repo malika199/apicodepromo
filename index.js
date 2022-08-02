@@ -79,8 +79,8 @@ app.post("/disable", async (req, res) => {
         }
         obj = [...obj, elem];
         return obj;
-      });
-      return Code.doc(el.id).update({ list_codes: obj });
+      }); return Code.doc(el.id).update({ list_codes: obj });
+
     });
   });
 
