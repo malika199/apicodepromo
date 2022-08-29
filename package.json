@@ -16,6 +16,6 @@
     "firebase": "^8.10.1",
     "firebase-admin": "^10.2.0",
     "heroku": "^7.60.2",
-    "nodemon": "^2.0.15"
+    "nodemon": "^2.0.19"
   }
 }

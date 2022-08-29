@@ -41,13 +41,16 @@ app.post(`/getbycode`, async (req, res) => {
   let codePromo = "";
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
-      el.data().list_codes.forEach((elem) => { 
+      el.data().list_codes.forEach((elem) => {
         var date_exp = el.data().date_expiration;
-        var date_today = new Date().toLocaleDateString("fr-FR")
-        if ( codeUrl == elem.code_unique && elem.isValid == true && date_exp >= date_today) {
-             
-                console.log(date_today)
-                 console.log(date_exp)
+        var date_today = new Date().toLocaleDateString("fr-FR");
+        if (
+          codeUrl == elem.code_unique &&
+          elem.isValid == true &&
+          date_exp >= date_today
+        ) {
+          console.log(date_today);
+          console.log(date_exp);
           console.log("elem.isValid", elem.isValid);
 
           codePromo = el.data().code_promo;
@@ -67,24 +70,39 @@ app.post(`/getbycode`, async (req, res) => {
 
 app.post("/disable", async (req, res) => {
   const codeUnique = req.body.codeUnique;
+  // code qu'on passe
   let obj = [];
+  let elSearch;
+  let affect;
+  let ee
+
   const snapshot = await Code.get().then((e) => {
-    console.log("e", e.docs);
+    // console.log("e", e.docs);
 
     return e.docs.forEach((el) => {
-      el.data().list_codes.filter((elem) => {
+      console.log("ellllllllllllllllllllll", el.id);
+      // parcourir tout les documents
+      let doc = el.data().list_codes.map((elem) => {
+        // parcourir les items d'un document
         console.log("elem", elem);
         if (codeUnique == elem.code_unique) {
+          elSearch = el.id;
+          // ee = el.data().list_codes
           elem.isValid = false;
         }
-        obj = [...obj, elem];
-        return obj;
-      }); return Code.doc(el.id).update({ list_codes: obj });
+        return elem
+        if (el.id == elSearch) {
+          obj = [...obj, elem];
+          console.log("obj", obj);
+        }
+      });
+      console.log("=====> doc",doc)
+       affect = Code.doc(el.id).update({ list_codes: doc });
 
+      return affect;
     });
   });
-
-  console.log(obj);
+  // console.log(obj);
 
   res.send({ msg: "code modifié" });
 });
@@ -111,3 +129,31 @@ app.listen(process.env.PORT || 5000, (err) => {
   }
   console.log(`app is runnning on port ${process.env.PORT}`);
 });
+
+// usersRef.whereArrayContains("friends", john).get().addOnCompleteListener{ johnTask ->
+//   johnTask.apply {
+//       if (johnTask.isSuccessful) {
+//           for (document in result) {
+//               val docIdRef = usersRef.document(document.id)
+//               val userFriends = document.toObject(User::class.java).friends
+//               userFriends?.let {
+//                   userFriends.remove(john)
+//                   userFriends.add(Friend("John", 21))
+//                   docIdRef.set(mutableMapOf("friends" to userFriends), SetOptions.merge()).addOnCompleteListener{ setTask ->
+//                       if (setTask.isSuccessful) {
+//                           Log.d(TAG, "Update complete.")
+//                       } else {
+//                           setTask.exception?.message?.let {
+//                               Log.e(TAG, it)
+//                           }
+//                       }
+//                   }
+//               }
+//           }
+//       } else {
+//           johnTask.exception?.message?.let {
+//               Log.e(TAG, it)
+//           }
+//       }
+//   }
+// }
