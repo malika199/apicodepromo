@@ -42,15 +42,15 @@ app.post(`/getbycode`, async (req, res) => {
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
       el.data().list_codes.forEach((elem) => {
-        var date_exp = el.data().date_expiration;
-        var date_today = new Date().toLocaleDateString("fr-FR");
+        var date_exp = new Date(el.data().date_expiration).getTime();
+         var date_today = new Date().getTime();
         if (
           codeUrl == elem.code_unique &&
-          elem.isValid == true &&
-          date_exp >= date_today
+          elem.isValid == true
+          // && date_exp >= date_today
         ) {
           console.log(date_today);
-          console.log(date_exp);
+           console.log(date_exp);
           console.log("elem.isValid", elem.isValid);
 
           codePromo = el.data().code_promo;
