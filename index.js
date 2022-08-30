@@ -36,21 +36,36 @@ app.get("/getcodes", async (req, res) => {
   const list = snapshot.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
   res.send(list);
 });
+
+function momentTest(uneDate) {
+  var elem = uneDate.split('/');
+  jour = elem[0];
+  mois = elem[1];
+  annee = elem[2];
+  var elemMAJ = `${annee}/${mois}/${jour} `;
+  
+  return elemMAJ;
+ 
+}
 app.post(`/getbycode`, async (req, res) => {
   let codeUrl = req.body.codeUrl;
   let codePromo = "";
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
       el.data().list_codes.forEach((elem) => {
-        var date_exp = new Date(el.data().date_expiration).getTime();
-         var date_today = new Date().getTime();
+        // var date_exp = new Date(el.data().date_expiration).getTime();
+        var exp = momentTest(el.data().date_expiration)
+        var date_exp = new Date(exp).getTime();
+         var date_today = new Date().getTime("en-US");
         if (
           codeUrl == elem.code_unique &&
           elem.isValid == true
-          // && date_exp >= date_today
+          && date_exp >= date_today
         ) {
-          console.log(date_today);
-           console.log(date_exp);
+          console.log('date_today',date_today);
+           console.log('date_exp',date_exp);
+           console.log('exp',exp);
+
           console.log("elem.isValid", elem.isValid);
 
           codePromo = el.data().code_promo;

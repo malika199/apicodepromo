@@ -91,6 +91,16 @@ app.get("/getcodes", function _callee2(req, res) {
     }
   });
 });
+
+function momentTest(uneDate) {
+  var elem = uneDate.split('/');
+  jour = elem[0];
+  mois = elem[1];
+  annee = elem[2];
+  var elemMAJ = "".concat(annee, "/").concat(mois, "/").concat(jour, " ");
+  return elemMAJ;
+}
+
 app.post("/getbycode", function _callee3(req, res) {
   var codeUrl, codePromo, snapshot;
   return regeneratorRuntime.async(function _callee3$(_context3) {
@@ -103,16 +113,18 @@ app.post("/getbycode", function _callee3(req, res) {
           return regeneratorRuntime.awrap(Code.get().then(function (e) {
             return e.docs.forEach(function (el) {
               el.data().list_codes.forEach(function (elem) {
-                var date_exp = new Date(el.data().date_expiration).getTime();
-                var date_today = new Date().getTime();
+                // var date_exp = new Date(el.data().date_expiration).getTime();
+                var exp = momentTest(el.data().date_expiration);
+                var date_exp = new Date(exp).getTime();
+                var date_today = new Date().getTime("en-US");
 
-                if (codeUrl == elem.code_unique && elem.isValid == true // && date_exp >= date_today
-                ) {
-                    console.log(date_today);
-                    console.log(date_exp);
-                    console.log("elem.isValid", elem.isValid);
-                    codePromo = el.data().code_promo;
-                  } else {
+                if (codeUrl == elem.code_unique && elem.isValid == true && date_exp >= date_today) {
+                  console.log('date_today', date_today);
+                  console.log('date_exp', date_exp);
+                  console.log('exp', exp);
+                  console.log("elem.isValid", elem.isValid);
+                  codePromo = el.data().code_promo;
+                } else {
                   console.log("code invalide ");
                 }
               });
