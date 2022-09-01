@@ -40,7 +40,7 @@ app.post("/create", function _callee(req, res) {
           data = req.body;
           list_codes = [];
 
-          for (index = 0; index < 5; index++) {
+          for (index = 0; index < 10; index++) {
             list_codes = [].concat(_toConsumableArray(list_codes), [{
               code_unique: generateCodeUinque(),
               maxDate: new Date().toLocaleDateString("fr-FR"),
@@ -102,14 +102,15 @@ function momentTest(uneDate) {
 }
 
 app.post("/getbycode", function _callee3(req, res) {
-  var codeUrl, codePromo, snapshot;
+  var codeUrl, codePromo, isValid, snapshot;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           codeUrl = req.body.codeUrl;
           codePromo = "";
-          _context3.next = 4;
+          isValid = false;
+          _context3.next = 5;
           return regeneratorRuntime.awrap(Code.get().then(function (e) {
             return e.docs.forEach(function (el) {
               el.data().list_codes.forEach(function (elem) {
@@ -132,22 +133,25 @@ app.post("/getbycode", function _callee3(req, res) {
             });
           }));
 
-        case 4:
+        case 5:
           snapshot = _context3.sent;
 
           if (!res.status(200)) {
-            _context3.next = 9;
+            _context3.next = 11;
             break;
           }
 
+          isValid = true;
           return _context3.abrupt("return", res.json({
             codePromo: codePromo
           }));
 
-        case 9:
-          console.log(" votre code ne correspent à aucun code promo");
+        case 11:
+          return _context3.abrupt("return", res.json({
+            isValid: isValid
+          }));
 
-        case 10:
+        case 12:
         case "end":
           return _context3.stop();
       }

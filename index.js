@@ -16,7 +16,7 @@ app.get("/", (req, res) => {
 app.post("/create", async (req, res) => {
   const data = req.body;
   let list_codes = [];
-  for (let index = 0; index < 5; index++) {
+  for (let index = 0; index < 10; index++) {
     list_codes = [
       ...list_codes,
       {
@@ -50,6 +50,7 @@ function momentTest(uneDate) {
 app.post(`/getbycode`, async (req, res) => {
   let codeUrl = req.body.codeUrl;
   let codePromo = "";
+  let isValid = false;
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
       el.data().list_codes.forEach((elem) => {
@@ -77,9 +78,10 @@ app.post(`/getbycode`, async (req, res) => {
     })
   );
   if (res.status(200)) {
+    isValid = true
     return res.json({ codePromo });
   } else {
-    console.log(" votre code ne correspent à aucun code promo");
+    return res.json({ isValid});
   }
 });
 
