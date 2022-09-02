@@ -102,14 +102,14 @@ function momentTest(uneDate) {
 }
 
 app.post("/getbycode", function _callee3(req, res) {
-  var codeUrl, codePromo, isValid, snapshot;
+  var codeUrl, codePromo, isValidd, snapshot;
   return regeneratorRuntime.async(function _callee3$(_context3) {
     while (1) {
       switch (_context3.prev = _context3.next) {
         case 0:
           codeUrl = req.body.codeUrl;
           codePromo = "";
-          isValid = false;
+          isValidd = false;
           _context3.next = 5;
           return regeneratorRuntime.awrap(Code.get().then(function (e) {
             return e.docs.forEach(function (el) {
@@ -125,6 +125,7 @@ app.post("/getbycode", function _callee3(req, res) {
                   console.log('exp', exp);
                   console.log("elem.isValid", elem.isValid);
                   codePromo = el.data().code_promo;
+                  isValidd = true;
                 } else {
                   console.log("code invalide ");
                 }
@@ -136,22 +137,22 @@ app.post("/getbycode", function _callee3(req, res) {
         case 5:
           snapshot = _context3.sent;
 
-          if (!res.status(200)) {
-            _context3.next = 11;
+          if (!(res.status(200) && isValidd == true)) {
+            _context3.next = 10;
             break;
           }
 
-          isValid = true;
           return _context3.abrupt("return", res.json({
-            codePromo: codePromo
+            codePromo: codePromo,
+            isValidd: isValidd
+          }));
+
+        case 10:
+          return _context3.abrupt("return", res.json({
+            isValidd: isValidd
           }));
 
         case 11:
-          return _context3.abrupt("return", res.json({
-            isValid: isValid
-          }));
-
-        case 12:
         case "end":
           return _context3.stop();
       }

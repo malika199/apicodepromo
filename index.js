@@ -50,7 +50,7 @@ function momentTest(uneDate) {
 app.post(`/getbycode`, async (req, res) => {
   let codeUrl = req.body.codeUrl;
   let codePromo = "";
-  let isValid = false;
+  let isValidd = false;
   const snapshot = await Code.get().then((e) =>
     e.docs.forEach((el) => {
       el.data().list_codes.forEach((elem) => {
@@ -70,18 +70,20 @@ app.post(`/getbycode`, async (req, res) => {
           console.log("elem.isValid", elem.isValid);
 
           codePromo = el.data().code_promo;
+          isValidd=true;
+
         } else {
           console.log("code invalide ");
         }
       });
       console.log("codePromo", codePromo);
-    })
+    }) 
   );
-  if (res.status(200)) {
-    isValid = true
-    return res.json({ codePromo });
-  } else {
-    return res.json({ isValid});
+  if (res.status(200) && isValidd == true) {
+    return res.json({ codePromo ,isValidd});
+  }else{
+    return res.json({  isValidd});
+
   }
 });
 
