@@ -42,7 +42,7 @@ function momentTest(uneDate) {
   jour = elem[0];
   mois = elem[1];
   annee = elem[2];
-  var elemMAJ = `${annee}/${mois}/${jour} `;
+  var elemMAJ = `${annee}/${mois}/${jour}`;
   
   return elemMAJ;
  
@@ -57,11 +57,14 @@ app.post(`/getbycode`, async (req, res) => {
         // var date_exp = new Date(el.data().date_expiration).getTime();
         var exp = momentTest(el.data().date_expiration)
         var date_exp = new Date(exp).getTime();
-         var date_today = new Date().getTime("en-US");
+         var date_today = new Date().toLocaleDateString() ;
+         var today = momentTest(date_today);
+         var date_tod = new Date(today).getTime();
+
         if (
           codeUrl == elem.code_unique &&
           elem.isValid == true
-          && date_exp >= date_today
+          && date_exp >= date_tod
         ) {
           console.log('date_today',date_today);
            console.log('date_exp',date_exp);
